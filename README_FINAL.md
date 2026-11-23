@@ -136,32 +136,6 @@ El test `MotorDlpTest` verifica la detección de un escenario completo de fraude
 
 Datos de prueba ficticios usados por el equipo: tarjeta `4242 4242 4242 4242` y CBU `0140000000000000000000`.
 
-## Estado frente a la propuesta
-
-| Objetivo de la propuesta | Estado |
-|---|---|
-| UI/UX accesible: tamaño de teclas, respuesta táctil | ✅ Implementado (contraste fijo oscuro; sin selector de contraste) |
-| Motor DLP local con regex + Luhn + CBU/CVU | ✅ Implementado |
-| Análisis de **portapapeles** (pegado) antes de consolidar el texto | ⏳ Resuelto en el prototipo Python; **pendiente en Kotlin** |
-| Canal de alerta desacoplado y **cifrado** (bot/webhook) | ⚠️ Se implementó **SMS** (funciona sin internet). El canal cifrado queda como mejora |
-| Metadatos únicamente en la alerta (sin texto) | ✅ El SMS solo informa el tipo de riesgo |
-| **Sin retención en disco** del texto | ⚠️ Se guarda un registro de auditoría local con texto **ofuscado**; conviene revisarlo contra este objetivo |
-| Aviso persistente si el teclado es desactivado o reemplazado | ⏳ Pendiente (hoy solo hay tarjeta de estado dentro de la app) |
-| Desarrollo seguro (OWASP Mobile Top 10) | 🔄 En curso |
-| CI/CD con GitHub Actions y escaneo MobSF | ⏳ Pendiente |
-| Pentesting y verificación de telemetría con Burp Suite | ⏳ Pendiente |
-| Marco normativo (Ley 25.326) y consentimiento informado | ✅ Política de privacidad redactada y *Prominent Disclosure* integrado |
-| Distribución: Google Play / F-Droid / APK institucional | 🔄 `.aab` firmado generado; APK para pruebas de campo |
-
-## Limitaciones conocidas
-
-- La detección usa expresiones regulares y palabras clave, por lo que puede generar **falsos positivos** y **falsos negativos**. Por ejemplo, "suspensión" con tilde no coincide con la palabra clave "suspension".
-- Una **sola palabra clave** de ingeniería social ya dispara la alerta y el SMS, aunque no haya datos sensibles.
-- El **DNI** se detecta en el motor, pero todavía no dispara alerta ni figura en el tipo de riesgo.
-- El teclado **avisa y notifica**; no impide que el texto se escriba en el campo de destino.
-- Layout disponible solo en **español**. No hay sugerencias, autocorrección ni emojis.
-- Google Play restringe el uso del permiso `SEND_SMS` y los métodos de entrada; por eso la propuesta prevé F-Droid y distribución institucional como alternativa.
-
 ## Privacidad
 
 - El análisis es 100 % local; no hay llamadas a APIs externas.
@@ -180,15 +154,3 @@ Integrantes y pilares según la propuesta del PTFI:
 | 3. Desarrollo móvil y usabilidad (UX/UI) | Jonatan Daniel Rodriguez |
 | 4. DevSecOps y canal de comunicación | Paula Olivia Rapetti |
 | 5. Auditoría ofensiva y pentesting | Pablo Daniel Alberto Gargiulo |
-
-## Referencias
-
-- Anderson, C., Benton, C., Biddle, R., & Chiasson, S. (2020). Who falls for phishing? A study of susceptibility and age differences in online fraud. *Computers in Human Behavior, 108*, 106316. https://doi.org/10.1016/j.chb.2020.106316
-- Harrison, B., Vishwanath, A., & Rao, H. R. (2018). A survey of phishing susceptibility among young adults. *Proceedings of the 51st HICSS* (pp. 4038–4047). http://hdl.handle.net/10125/50394
-- Open Web Application Security Project. (2024). *OWASP Mobile Top 10 Security Risks*. https://owasp.org/www-project-mobile-top-10/
-- Stallings, W. (2020). *Cryptography and network security: Principles and practice* (8.ª ed.). Pearson.
-- Zhou, Y., & Jiang, X. (2012). Dissecting Android malware: Characterization and evolution. *2012 IEEE Symposium on Security and Privacy* (pp. 95–109). https://doi.org/10.1109/SP.2012.16
-
-## Declaración de uso de IA
-
-Según la propuesta, se utilizó un asistente de lenguaje LLM en la redacción del documento de propuesta (menos del 15 %). La arquitectura, la lógica de validación y el análisis de riesgos fueron definidos por el equipo. Durante el desarrollo del código también se empleó asistencia de IA, que el equipo revisó y validó.
