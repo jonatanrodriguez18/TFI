@@ -24,14 +24,20 @@ class ServicioTeclado : InputMethodService() {
 
     private val letrasQwerty = listOf(
         "q", "w", "e", "r", "t", "y", "u", "i", "o", "p",
-        "a", "s", "d", "f", "g", "h", "j", "k", "l",
+        "a", "s", "d", "f", "g", "h", "j", "k", "l", "ñ",
         "z", "x", "c", "v", "b", "n", "m"
     )
 
     private val caracteresNumericos = listOf(
         "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
-        "@", "#", "$", "%", "&", "-", "+", "(", ")",
+        "@", "#", "$", "%", "&", "-", "+", "(", ")", "¿",
         "*", "\"", "'", ":", ";", "!", "?"
+    )
+
+    // Pulsación larga: carácter base -> variante con tilde / signo español
+    private val variantesLargas = mapOf(
+        "a" to "á", "e" to "é", "i" to "í", "o" to "ó", "u" to "ú",
+        "!" to "¡"
     )
 
     override fun onCreate() {
@@ -80,7 +86,7 @@ class ServicioTeclado : InputMethodService() {
 
         val botonesLetrasIds = listOf(
             R.id.btnQ, R.id.btnW, R.id.btnE, R.id.btnR, R.id.btnT, R.id.btnY, R.id.btnU, R.id.btnI, R.id.btnO, R.id.btnP,
-            R.id.btnA, R.id.btnS, R.id.btnD, R.id.btnF, R.id.btnG, R.id.btnH, R.id.btnJ, R.id.btnK, R.id.btnL,
+            R.id.btnA, R.id.btnS, R.id.btnD, R.id.btnF, R.id.btnG, R.id.btnH, R.id.btnJ, R.id.btnK, R.id.btnL, R.id.btnEnie,
             R.id.btnZ, R.id.btnX, R.id.btnC, R.id.btnV, R.id.btnB, R.id.btnN, R.id.btnM
         )
 
@@ -90,22 +96,16 @@ class ServicioTeclado : InputMethodService() {
             boton.setOnClickListener {
                 // NUEVO: Vibración sutil al tocar la tecla
                 boton.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                escribirDesdeTecla(boton.text.toString())
+            }
 
-                val textoAEscribir = boton.text.toString()
-                currentInputConnection?.commitText(textoAEscribir, 1)
-
-                palabraActual.append(textoAEscribir)
-
-                if (palabraActual.length > 150) {
-                    palabraActual.delete(0, palabraActual.length - 150)
-                }
-
-                if (!isNumericMode && isCaps && !isCapsLocked) {
-                    isCaps = false
-                    actualizarTextosBotones()
-                }
-
-                evaluarTextoEscrito(palabraActual.toString())
+            // Pulsación larga: vocales con tilde (á é í ó ú) y "¡" sobre "!"
+            boton.setOnLongClickListener {
+                val base = boton.text.toString()
+                val variante = variantesLargas[base.lowercase()] ?: return@setOnLongClickListener false
+                boton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                escribirDesdeTecla(if (base.first().isUpperCase()) variante.uppercase() else variante)
+                true
             }
         }
 
@@ -216,6 +216,24 @@ class ServicioTeclado : InputMethodService() {
         aplicarTamanoDinamico(vista, btnBorrar, btnEnter, btnMayus, btnSimbolos)
 
         return vista
+    }
+
+    // Escribe un carácter de tecla (toque o pulsación larga) y re-evalúa el buffer DLP
+    private fun escribirDesdeTecla(textoAEscribir: String) {
+        currentInputConnection?.commitText(textoAEscribir, 1)
+
+        palabraActual.append(textoAEscribir)
+
+        if (palabraActual.length > 150) {
+            palabraActual.delete(0, palabraActual.length - 150)
+        }
+
+        if (!isNumericMode && isCaps && !isCapsLocked) {
+            isCaps = false
+            actualizarTextosBotones()
+        }
+
+        evaluarTextoEscrito(palabraActual.toString())
     }
 
     private fun aplicarTamanoDinamico(vista: View, btnBorrar: View, btnEnter: View, btnMayus: View, btnSimbolos: View) {

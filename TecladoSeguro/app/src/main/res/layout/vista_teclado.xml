@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="6dp"
-        android:paddingHorizontal="20dp"
+        android:paddingHorizontal="4dp"
         tools:ignore="ButtonStyle">
 
         <android.widget.Button android:id="@+id/btnA" android:layout_width="0dp" android:layout_height="55dp" android:layout_weight="1" android:layout_marginEnd="2dp" android:padding="0dp" android:text="A" android:textSize="22sp" android:textColor="#FFFFFF" android:background="@drawable/fondo_tecla" />
@@ -61,7 +61,8 @@
         <android.widget.Button android:id="@+id/btnH" android:layout_width="0dp" android:layout_height="55dp" android:layout_weight="1" android:layout_marginEnd="2dp" android:padding="0dp" android:text="H" android:textSize="22sp" android:textColor="#FFFFFF" android:background="@drawable/fondo_tecla" />
         <android.widget.Button android:id="@+id/btnJ" android:layout_width="0dp" android:layout_height="55dp" android:layout_weight="1" android:layout_marginEnd="2dp" android:padding="0dp" android:text="J" android:textSize="22sp" android:textColor="#FFFFFF" android:background="@drawable/fondo_tecla" />
         <android.widget.Button android:id="@+id/btnK" android:layout_width="0dp" android:layout_height="55dp" android:layout_weight="1" android:layout_marginEnd="2dp" android:padding="0dp" android:text="K" android:textSize="22sp" android:textColor="#FFFFFF" android:background="@drawable/fondo_tecla" />
-        <android.widget.Button android:id="@+id/btnL" android:layout_width="0dp" android:layout_height="55dp" android:layout_weight="1" android:padding="0dp" android:text="L" android:textSize="22sp" android:textColor="#FFFFFF" android:background="@drawable/fondo_tecla" />
+        <android.widget.Button android:id="@+id/btnL" android:layout_width="0dp" android:layout_height="55dp" android:layout_weight="1" android:layout_marginEnd="2dp" android:padding="0dp" android:text="L" android:textSize="22sp" android:textColor="#FFFFFF" android:background="@drawable/fondo_tecla" />
+        <android.widget.Button android:id="@+id/btnEnie" android:layout_width="0dp" android:layout_height="55dp" android:layout_weight="1" android:padding="0dp" android:text="Ñ" android:textSize="22sp" android:textColor="#FFFFFF" android:background="@drawable/fondo_tecla" />
     </LinearLayout>
 
     <!-- Fila 3: Letras Inferiores y Acciones Básicas -->
